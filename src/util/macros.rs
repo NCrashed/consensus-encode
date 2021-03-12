@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! impl_consensus_encoding {
     ($thing:ident, $($field:ident),+) => (
-        impl $crate::consensus::Encodable for $thing {
+        impl consensus_encode::Encodable for $thing {
             #[inline]
             fn consensus_encode<S: ::std::io::Write>(
                 &self,
@@ -13,13 +13,13 @@ macro_rules! impl_consensus_encoding {
             }
         }
 
-        impl $crate::consensus::Decodable for $thing {
+        impl consensus_encode::Decodable for $thing {
             #[inline]
             fn consensus_decode<D: ::std::io::Read>(
                 mut d: D,
-            ) -> Result<$thing, $crate::consensus::encode::Error> {
+            ) -> Result<$thing, consensus_encode::Error> {
                 Ok($thing {
-                    $($field: $crate::consensus::Decodable::consensus_decode(&mut d)?),+
+                    $($field: consensus_encode::Decodable::consensus_decode(&mut d)?),+
                 })
             }
         }
